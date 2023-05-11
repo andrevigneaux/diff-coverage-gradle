@@ -2,6 +2,7 @@ package com.form.coverage.diff.git
 
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.diff.DiffEntry
+import org.eclipse.jgit.diff.DiffEntry.ChangeType
 import org.eclipse.jgit.diff.DiffFormatter
 import org.eclipse.jgit.lib.ConfigConstants
 import org.eclipse.jgit.lib.Constants
@@ -41,7 +42,9 @@ class JgitDiff(workingDir: File) {
                 initialize()
 
                 obtainDiffEntries(git, revision).forEach {
-                    format(it)
+                    if (it.changeType.equals(ChangeType.ADD) || it.changeType.equals(ChangeType.MODIFY)) {
+                        format(it)
+                    }
                 }
 
                 close()
